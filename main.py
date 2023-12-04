@@ -1,16 +1,46 @@
-# This is a sample Python script.
+import pygame
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from Game import Game
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+pygame.init()
+import Joueur
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Create the windows
+screenName = pygame.display.set_caption("my Game")
+screenDimension = pygame.display.set_mode((1080, 720))
+
+background = pygame.image.load('assets/bg.jpg')
+#charger le jeu
+game = Game()
+
+running = True
+
+#boucle tant que la condition est vrai
+while running:
+    #appliquer l'arriere plan
+    screenDimension.blit(background, (0, -200))
+    #appliquer l'image du joueur
+    screenDimension.blit(game.player.image, game.player.rect)
+    print(game.pressed)
+    if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screenDimension.get_width():
+        game.player.moveRight()
+    elif game.pressed.get(pygame.K_LEFT) and game.player.rect.x > 0:
+        game.player.moveLeft()
+
+    print(game.player.rect.x)
+    #mettre a jour l'ecran
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit()
+            print("fermeture du jeu")
+        #detecter si un joueur lache une touche du clavier
+        elif event.type == pygame.KEYDOWN:
+            game.pressed[event.key] = True
+            #detecter si la touche espace est enclenchée pour lancer notre projectile
+        elif event.type == pygame.KEYUP:
+            game.pressed[event.key] = False
