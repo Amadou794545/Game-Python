@@ -1,5 +1,7 @@
 import pygame
 
+from Projectile import Projectile
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -13,6 +15,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 450
         self.rect.y = 500
+
+    def launchProjectile(self):
+        self.allProjectiles.add(Projectile(self))
 
     def moveRight(self):
         self.rect.x += self.velocity
